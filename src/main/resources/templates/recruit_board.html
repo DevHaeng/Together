@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layouts/sb-and-logis-layout}"
+>
+<meta charset="UTF-8">
+
+  <body>
+  <div layout:fragment="content">
+    <main id="main">
+      <!-- ======= Breadcrumbs ======= -->
+      <div class="breadcrumbs">
+        <div class="page-header d-flex align-items-center"
+            th:style="'background-image:url('+ @{/assets/img/together.jpg} +');'">
+
+          <div class="container position-relative">
+            <div class="row d-flex justify-content-center">
+              <div class="col-lg-6 text-center">
+                <h2>동행 게시판</h2>
+                <p>함께 여행할 동행자를 찾아보세요</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <nav>
+          <div class="container">
+            <ol>
+              <li><a href="mainpage.html">Home</a></li>
+              <li><a href="recruit_board.html"></a>동행 게시판</li>
+            </ol>
+          </div>
+        </nav>
+      </div>
+      <!-- End Breadcrumbs -->
+
+      <section class="sample-page">
+        <div class="container" data-aos="fade-up">
+          <p><b>동행자를 찾아보세요!</b></p>
+          <br />
+          <div id="wrap">
+            <form action="/board/search" method="GET">
+              <div class="search">
+                <input name="keyword" type="text" placeholder="검색어를 입력하세요.">
+                <button>검색</button>
+              </div>
+            </form>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>출발날짜</th>
+                <th>도착날짜</th>
+                <th>조회수</th>
+                <th>모집현황</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="board: ${boardList}">
+                <td>
+                  <span th:text="${board.id}"></span>
+                </td>
+                <td>
+                  <a th:href="@{'/recruit/view?bno=' + ${board.id}}">
+                    <span th:text="${board.title}"></span>
+                  </a>
+                </td>
+                <td>
+                  <span th:text="*{#temporals.format(board.startdate,'yyyy-MM-dd')}"></span>
+                </td>
+                <td>
+                  <span th:text="*{#temporals.format(board.enddate,'yyyy-MM-dd')}"></span>
+                </td>
+                <td>
+                  <span th:text="${board.viewcount}"></span>
+                </td>
+                <td>
+                  <span th:text="|${board.curNum}/${board.perNum}|"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <span th:each="pageNum : ${pageList}" th:inline="text">
+              <a th:href="@{'/board/recruitBoard?page=' + ${pageNum}}">[[${pageNum}]]</a>
+            </span>
+          </div>
+          <div class="buttonC">
+            <button class="w-btn" type="button"
+                    onclick="location.href='../recruit/write-form' "
+            ><b>글쓰기</b>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <!-- End #main -->
+    <a href="#"
+       class="scroll-top d-flex align-items-center justify-content-center"
+    ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <div id="preloader"></div>
+
+  </div>
+  </body>
+  </div>
+</html>
